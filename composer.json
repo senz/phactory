@@ -9,7 +9,8 @@
     "require-dev": {
         "ext-pdo": "*",
         "ext-pdo_sqlite": "*",
-        "ext-mongo": "*"
+        "ext-mongo": "*",
+        "psr/log": "*"
     },
     "suggest": {
         "ext-pdo": "Allows use of Phactory for testing against SQL databases",
