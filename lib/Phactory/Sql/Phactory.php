@@ -123,11 +123,11 @@ class Phactory {
      * @return object Row
      */
     public function createWithAssociations($blueprint_name, $associations = array(), $overrides = array()) {
-        if(! ($blueprint = $this->_blueprints[$blueprint_name]) ) {
+        if(!isset($this->_blueprints[$blueprint_name])) {
             throw new \Exception("No blueprint defined for '$blueprint_name'");
         }
             
-        return $blueprint->create($overrides, $associations);
+        return $this->_blueprints[$blueprint_name]->create($overrides, $associations);
     }
 
     /*
