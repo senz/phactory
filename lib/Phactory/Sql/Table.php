@@ -12,6 +12,11 @@ class Table {
         $this->_phactory = $phactory;
         $this->_db_util = DbUtilFactory::getDbUtil($phactory);
         $this->_singular = $singular_name;
+
+        if (null !== $phactory->getOverridePluralize()) {
+            $pluralize = $phactory->getOverridePluralize();
+        }
+
         if($pluralize) {
             $this->_name = Inflector::pluralize($singular_name);
         } else {

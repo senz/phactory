@@ -13,6 +13,9 @@ class Phactory {
      */
     protected $_pdo;
 
+    /** @var null|bool null if override disabled, bool will set on all tables given value. */
+    private $_overridePluralize = null;
+
     /**
      * Constructs a Phactory object for testing SQL databases
      *
@@ -38,6 +41,22 @@ class Phactory {
      */
     public function getConnection() {
         return $this->_pdo;
+    }
+
+    /**
+     * @param bool|null $overridePluralize
+     */
+    public function setOverridePluralize($overridePluralize)
+    {
+        $this->_overridePluralize = $overridePluralize;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getOverridePluralize()
+    {
+        return $this->_overridePluralize;
     }
 
     /*
