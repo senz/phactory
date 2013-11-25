@@ -2,10 +2,19 @@
 
 namespace Phactory\Mongo;
 
+/**
+ * Class PhactoryTest
+ *
+ * @package Phactory\Mongo
+ * @group mongo
+ */
 class PhactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected $db;
+    /** @var Phactory */
     protected $phactory;
+    /** @var \Mongo */
+    private $mongo;
 
     protected function setUp()
     {
