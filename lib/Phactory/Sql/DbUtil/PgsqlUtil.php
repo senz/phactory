@@ -42,19 +42,24 @@ class PgsqlUtil extends AbstractDbUtil
 
     /**
      * Creates literal for pg array type. I.e.: {'a', 'b', 'c'} or {1,2,3}
+     *
      * @param array $arr
+     * @param string $type of array (integer, string)
+     * @throws \InvalidArgumentException
      * @return string
      */
-    public static function createArrayLiteral(array $arr)
+    public static function createArrayLiteral(array $arr, $type = 'string')
     {
+        if ($type != '' && !in_array($type, array('string', 'integer'))) {
+            throw new \InvalidArgumentException("Unsupported type '{$type}'");
+        }
+
         $out = '{';
         foreach ($arr as $el) {
-            if (is_numeric($el)) {
-                $out .= $el;
-            } elseif (is_array($el)) {
-                $out .= self::createArrayLiteral($el);
+            if (is_array($el)) {
+                $out .= self::createArrayLiteral($el, $type);
             } else {
-                $out .= "'{$el}'";
+                $out .= 'integer' == $type ? $el : "'{$el}'";
             }
             $out .= ',';
         }
