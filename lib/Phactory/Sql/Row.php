@@ -2,6 +2,8 @@
 
 namespace Phactory\Sql;
 
+use Phactory\Logger;
+
 class Row {
     protected $_table;
     protected $_storage = array();

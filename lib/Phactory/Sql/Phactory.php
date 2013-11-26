@@ -2,6 +2,8 @@
 
 namespace Phactory\Sql;
 
+use Phactory\Logger;
+
 class Phactory {
     /*
      * Array of table name => Blueprint

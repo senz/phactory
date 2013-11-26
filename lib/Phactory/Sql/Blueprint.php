@@ -2,6 +2,8 @@
 
 namespace Phactory\Sql;
 
+use Phactory\Logger;
+
 class Blueprint {
     protected $_table;
     protected $_defaults;
