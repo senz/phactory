@@ -1,4 +1,5 @@
 # Phactory: PHP Database Object Factory for Unit Testing
+[![Build Status](https://travis-ci.org/senz/phactory.png)](https://travis-ci.org/senz/phactory)
 
 ## What is it?
 Phactory is an alternative to using database fixtures in your PHP unit tests.
