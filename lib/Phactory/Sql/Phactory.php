@@ -3,6 +3,7 @@
 namespace Phactory\Sql;
 
 use Phactory\Logger;
+use Phactory\Sql\Helper\PDOHelper;
 
 class Phactory {
     /*
@@ -190,10 +191,7 @@ class Phactory {
         $stmt = $this->_pdo->prepare($sql);
         $r = $stmt->execute($params);
 
-        if($r === false){
-            $error = $stmt->errorInfo();
-            Logger::error('SQL statement failed: '.$sql.' ERROR MESSAGE: '.$error[2].' ERROR CODE: '.$error[1]);
-        }
+        PDOHelper::checkStatementResult($r, $stmt, $sql);
 
         $rows = array();
         while($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {

@@ -31,7 +31,6 @@ class Logger {
 
     public static function error($msg, $backtrace = false) {
        self::outputMessage(self::LEVEL_ERROR, $msg, $backtrace);
-       throw new \Exception();
     }
 
     public static function fatal($msg, $backtrace = true) {

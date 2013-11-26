@@ -3,6 +3,7 @@
 namespace Phactory\Sql;
 
 use Phactory\Logger;
+use Phactory\Sql\Helper\PDOHelper;
 
 class Row {
     protected $_table;
@@ -49,10 +50,7 @@ class Row {
         $stmt = $pdo->prepare($sql);
         $r = $stmt->execute($params);
 
-        if($r === false){
-            $error= $stmt->errorInfo();
-            Logger::error('SQL statement failed: '.$sql.' ERROR MESSAGE: '.$error[2].' ERROR CODE: '.$error[1]);
-        }
+        PDOHelper::checkStatementResult($r, $stmt, $sql);
 
         // only works if table's primary key autoincrements
         $id = $pdo->lastInsertId();

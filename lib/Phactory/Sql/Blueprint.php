@@ -3,6 +3,7 @@
 namespace Phactory\Sql;
 
 use Phactory\Logger;
+use Phactory\Sql\Helper\PDOHelper;
 
 class Blueprint {
     protected $_table;
@@ -183,10 +184,7 @@ class Blueprint {
                 $stmt = $pdo->prepare($sql);
                 $r = $stmt->execute(array(':from_id' => $row->getId(), ':to_id' => $to_row->getId()));
 
-                if($r === false){
-                    $error= $stmt->errorInfo();
-                    Logger::error('SQL statement failed: '.$sql.' ERROR MESSAGE: '.$error[2].' ERROR CODE: '.$error[1]);
-                }
+                PDOHelper::checkStatementResult($r, $stmt, $sql);
             }
         }
     }
