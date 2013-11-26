@@ -2,7 +2,6 @@
 
 namespace Phactory\Sql;
 
-use Phactory\Logger;
 use Phactory\Sql\Helper\PDOHelper;
 
 class Row {
@@ -50,7 +49,7 @@ class Row {
         $stmt = $pdo->prepare($sql);
         $r = $stmt->execute($params);
 
-        PDOHelper::checkStatementResult($r, $stmt, $sql);
+        PDOHelper::checkStatementResult($r, $stmt, $sql, $this->_phactory);
 
         // only works if table's primary key autoincrements
         $id = $pdo->lastInsertId();

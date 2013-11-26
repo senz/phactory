@@ -5,16 +5,18 @@
 
 namespace Phactory\Sql\Helper;
 
-
-use Phactory\Logger;
+use Phactory\Sql\Phactory;
 
 class PDOHelper {
-    public static function checkStatementResult($r, \PDOStatement $stmt, $sql)
+    public static function checkStatementResult($r, \PDOStatement $stmt, $sql, Phactory $phactory)
     {
         if($r === false){
-            $error= $stmt->errorInfo();
-            Logger::error('SQL statement failed: '.$sql.' ERROR MESSAGE: '.$error[2].' ERROR CODE: '.$error[1]);
-            throw new \Exception('Statement error: ' . print_r($stmt->errorInfo(), true));
+            $error = $stmt->errorInfo();
+            $phactory->getLogger()->error(
+                'SQL statement failed: {sql} ERROR MESSAGE: {msg} ERROR CODE: {code}',
+                array('sql' => $sql, 'msg' => $error[2], 'code' => $error[1])
+            );
+            throw new \Exception('Statement error: ' . print_r($error, true));
         }
     }
 }

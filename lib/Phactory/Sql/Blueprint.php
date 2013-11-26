@@ -2,7 +2,6 @@
 
 namespace Phactory\Sql;
 
-use Phactory\Logger;
 use Phactory\Sql\Helper\PDOHelper;
 
 class Blueprint {
@@ -184,7 +183,7 @@ class Blueprint {
                 $stmt = $pdo->prepare($sql);
                 $r = $stmt->execute(array(':from_id' => $row->getId(), ':to_id' => $to_row->getId()));
 
-                PDOHelper::checkStatementResult($r, $stmt, $sql);
+                PDOHelper::checkStatementResult($r, $stmt, $sql, $this->_phactory);
             }
         }
     }

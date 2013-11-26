@@ -2,8 +2,9 @@
 
 namespace Phactory\Sql;
 
-use Phactory\Logger;
 use Phactory\Sql\Helper\PDOHelper;
+use Phactory\StdoutLogger;
+use Psr\Log\LoggerInterface;
 
 class Phactory {
     /*
@@ -19,6 +20,9 @@ class Phactory {
     /** @var null|bool null if override disabled, bool will set on all tables given value. */
     private $_overridePluralize = null;
 
+    /** @var LoggerInterface */
+    private $_logger;
+
     /**
      * Constructs a Phactory object for testing SQL databases
      *
@@ -26,6 +30,26 @@ class Phactory {
      */
     public function __construct(\PDO $pdo) {
         $this->_pdo = $pdo;
+    }
+
+    /**
+     * Set logger object for diagnostic messages output.
+     *
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger) {
+        $this->_logger = $logger;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger() {
+        if (!$this->_logger) {
+            $this->_logger = new StdoutLogger();
+        }
+
+        return $this->_logger;
     }
 
     /*
@@ -191,7 +215,7 @@ class Phactory {
         $stmt = $this->_pdo->prepare($sql);
         $r = $stmt->execute($params);
 
-        PDOHelper::checkStatementResult($r, $stmt, $sql);
+        PDOHelper::checkStatementResult($r, $stmt, $sql, $this);
 
         $rows = array();
         while($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
