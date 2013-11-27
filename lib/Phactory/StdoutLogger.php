@@ -55,7 +55,7 @@ class StdoutLogger extends AbstractLogger {
     {
         $placeholders = array();
         foreach ($context as $placeholder => $value) {
-            if (preg_match('/[A-Za-z0-9_\.]+/', $placeholder)) {
+            if (preg_match('/^[A-Za-z0-9_\.]+$/', $placeholder)) {
                 $placeholders["{{$placeholder}}"] = $value;
             }
         }

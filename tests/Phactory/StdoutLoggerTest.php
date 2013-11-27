@@ -26,18 +26,39 @@ class StdoutLoggerTest extends PHPUnit_Framework_TestCase {
         VariableStream::reset($this->varname);
     }
 
-    public function testLog_infoLevelWoContext_matchExpected()
+    /**
+     * @param $level
+     * @dataProvider generateSupportedLevels
+     */
+    public function testLog_supportedLevelsWoContext_matchExpected($level)
     {
-        $this->cut->log(\Psr\Log\LogLevel::INFO, 'test');
+        $this->cut->log($level, 'test');
         $out = $GLOBALS[$this->varname];
-        $this->assertEquals("[info] test\n", $out);
+        $this->assertEquals("[{$level}] test\n", $out);
     }
 
-    public function testLog_infoLevelWContext_matchExpected()
+    /**
+     * @param $character
+     * @dataProvider generateSupportedCharacters
+     */
+    public function testLog_infoLevelWContext_replacedPlaceholder($character)
     {
-        $this->cut->log(\Psr\Log\LogLevel::INFO, 'test {c}', array('c' => 1));
+        $this->cut->log(\Psr\Log\LogLevel::INFO, 'test {c}', array('c' => str_repeat($character, 3)));
         $out = $GLOBALS[$this->varname];
-        $this->assertEquals("[info] test 1\n", $out);
+        $expected = '[info] test ' . str_repeat($character, 3) . "\n";
+        $this->assertEquals($expected, $out);
+    }
+
+    /**
+     * @param $character
+     * @dataProvider generateUnsupportedCharacters
+     */
+    public function testLog_unsupportedCharsInContext_untouchedPlaceholder($character)
+    {
+        $this->cut->log(\Psr\Log\LogLevel::INFO, 'test {c}', array('$c' => str_repeat($character, 5)));
+        $out = $GLOBALS[$this->varname];
+        $expected = '[info] test {c}' . "\n";
+        $this->assertEquals($expected, $out);
     }
 
     public function testSetStdout_resource_noException()
@@ -51,6 +72,40 @@ class StdoutLoggerTest extends PHPUnit_Framework_TestCase {
     public function testSetStdout_string_IAE()
     {
         $this->cut->setStdout('test');
+    }
+
+    /**
+     * @expectedException \Psr\Log\InvalidArgumentException
+     */
+    public function testLog_unsupportedLevel_IAE()
+    {
+        $this->cut->log('biliberda', 'test');
+    }
+
+    public function generateSupportedCharacters()
+    {
+        return array_chunk(array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9), array('_', '.')), 1);
+    }
+
+    public function generateUnsupportedCharacters()
+    {
+        return array_chunk(
+            array_merge(
+                range(chr(0), '-'),
+                range('[', '^'),
+                array('`', '/'),
+                range(chr(0x3a), chr(0x40)),
+                range('{', chr(0x7f))
+            ),
+            1
+        );
+    }
+
+    public function generateSupportedLevels()
+    {
+        $rfl = new ReflectionClass('Psr\Log\LogLevel');
+        $constants = $rfl->getConstants();
+        return array_chunk(array_values($constants), 1);
     }
 }
 
