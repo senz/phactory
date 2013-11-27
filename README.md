@@ -4,6 +4,8 @@
 ## What is it?
 Phactory is a factory for fixtures, written in PHP and targeted for reusable easy-to-read testing code.
 
+This is a fork of [Chris Kite's Phactory](https://github.com/chriskite/phactory) that improves on quality of code and support generally and postgresql part particulary.
+
 Generally, in tests you should avoid using fixtures and db layer directly.
 But what to do when you need to test models (DAO, ActiveRecords, etc...) or quickly test some legacy,
 tightly coupled piece of...code?
