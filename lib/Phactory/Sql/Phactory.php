@@ -4,9 +4,10 @@ namespace Phactory\Sql;
 
 use Phactory\Sql\Helper\PDOHelper;
 use Phactory\StdoutLogger;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
-class Phactory {
+class Phactory implements LoggerAwareInterface {
     /*
      * Array of table name => Blueprint
      */
@@ -36,6 +37,7 @@ class Phactory {
      * Set logger object for diagnostic messages output.
      *
      * @param LoggerInterface $logger
+     * @return null
      */
     public function setLogger(LoggerInterface $logger) {
         $this->_logger = $logger;
