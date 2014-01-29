@@ -121,7 +121,7 @@ class Phactory implements LoggerAwareInterface {
      *
      * @param string $table name of the table
      * @param array $overrides key => value pairs of column => value
-     * @return object Row
+     * @return Row
      */
     public function create($table, $overrides = array()) {
         return $this->createWithAssociations($table, array(), $overrides);
